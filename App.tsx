@@ -4,7 +4,7 @@ import { Paciente } from "./src/types/paciente";
 import { Medico } from "./src/interfaces/medico";
 import { Consulta } from "./src/interfaces/consulta";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Button, StyleSheet, Text, View } from "react-native";
 
 const cardiologia: Especialidade = {
   id: 1,
@@ -33,7 +33,7 @@ export default function App() {
     id: 1,
     medico: medico1,
     paciente: paciente1,
-    data: new Date(2026, 2, 10),
+    data: new Date(2026, 2, 28),
     valor: 350,
     status: "agendada",
     observacoes: "Consulta de rotina",
@@ -56,24 +56,24 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.titulo}>Consulta</Text>
-      <Text style={styles.texto}>Médico: {consulta.medico.nome}</Text>
-      <Text style={styles.texto}>Paciente: {consulta.paciente.nome}</Text>
-      <Text style={styles.texto}>Data: {formatarData(consulta.data)}</Text>
-      <Text style={styles.texto}>Valor: {formatarValor(consulta.valor)}</Text>
-      <Text style={styles.texto}>Status: {consulta.status}</Text>
+      <Text style={styles.titulo}>Sistema de Consultas</Text>
+      <View style={styles.card}>
+        <Text style={styles.texto}>Paciente: {consulta.paciente.nome}</Text>
+        <Text style={styles.texto}>Médico: {consulta.medico.nome}</Text>
+        <Text style={styles.texto}>Data: {formatarData(consulta.data)}</Text>
+        <Text style={styles.texto}>Valor: {formatarValor(consulta.valor)}</Text>
+        <Text style={styles.texto}>Status: {consulta.status}</Text>
 
-      <TouchableOpacity
-        style={styles.botao}
-        onPress={confirmarConsulta}
-        disabled={consulta.status === "confirmada"}
-      >
-        <Text style={styles.botaoTexto}>
-          {consulta.status === "confirmada" ? "Consulta confirmada" : "Confirmar consulta"}
-        </Text>
-      </TouchableOpacity>
+        {consulta.status === "agendada" ? (
+          <View style={styles.botao}>
+            <Button title="Confirmar Consulta" onPress={confirmarConsulta} color="#d91919" />
+          </View>
+        ) : (
+          <Text style={styles.statusConfirmado}>Consulta confirmada</Text>
+        )}
+      </View>
 
-      <StatusBar style="auto" />
+      <StatusBar style="dark" />
     </View>
   );
 }
@@ -81,31 +81,35 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#d91919",
+    backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
     paddingHorizontal: 20,
-    gap: 8,
   },
   titulo: {
-    fontSize: 36,
-    color: "#fff",
+    fontSize: 24,
+    color: "#111827",
     fontWeight: "bold",
-    marginBottom: 10,
+    marginBottom: 20,
+  },
+  card: {
+    width: "80%",
+    padding: 20,
+    borderWidth: 1,
+    borderColor: "#d1d5db",
+    borderRadius: 8,
+    gap: 8,
   },
   texto: {
-    color: "#fff",
+    color: "#111827",
     fontSize: 16,
   },
   botao: {
-    marginTop: 14,
-    backgroundColor: "#fff",
-    paddingVertical: 10,
-    paddingHorizontal: 16,
-    borderRadius: 8,
+    marginTop: 12,
   },
-  botaoTexto: {
-    color: "#d91919",
+  statusConfirmado: {
+    marginTop: 12,
+    color: "#047857",
     fontWeight: "bold",
   },
 });
